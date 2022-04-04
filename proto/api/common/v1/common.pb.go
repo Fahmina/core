@@ -362,7 +362,7 @@ func (x *Pose) GetTheta() float64 {
 	return 0
 }
 
-// A pose and the reference frame in which it was observed
+// PoseInFrame contains a pose and the and the reference frame in which it was observed
 type PoseInFrame struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -591,7 +591,7 @@ func (x *RectangularPrism) GetDepthMm() float64 {
 	return 0
 }
 
-// Dimensions of a given geometry and the pose of its center. The geometry is one of either a sphere or a box.
+// Geometry contains the dimensions of a given geometry and the pose of its center. The geometry is one of either a sphere or a box.
 type Geometry struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -683,7 +683,8 @@ func (*Geometry_Sphere) isGeometry_GeometryType() {}
 
 func (*Geometry_Box) isGeometry_GeometryType() {}
 
-// Dimensions of a given geometry, pose of its center point, and the reference frame by which it was observed
+// GeometriesinFrame contains the dimensions of a given geometry, pose of its center point, and the reference frame by which it was
+// observed.
 type GeometriesInFrame struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -741,7 +742,7 @@ func (x *GeometriesInFrame) GetGeometries() []*Geometry {
 	return nil
 }
 
-// An image in bytes that contains point cloud data of all of the objects captured by a given observer as well as a repeated list of
+// PointCloudObject contains an image in bytes with point cloud data of all of the objects captured by a given observer as well as a repeated list of
 // geometries which respresents the center point and geometry of each of the objects within the point cloud
 type PointCloudObject struct {
 	state         protoimpl.MessageState
@@ -800,7 +801,6 @@ func (x *PointCloudObject) GetGeometries() *GeometriesInFrame {
 	return nil
 }
 
-// Geocoordinates expressed as latitude and longitude
 type GeoPoint struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -916,9 +916,9 @@ func (x *Transform) GetPoseInObserverFrame() *PoseInFrame {
 	return nil
 }
 
-// Information about the physical environment around a given robot. ALl of the fields within this message as optional, they can include
-// information about the the physical dimensions of obstacles as well as any desired transforms between a given reference frame and a new
-// new target reference frame.
+// WorldState contrains information about the physical environment around a given robot. All of the fields within this message as optional,
+// they can include information about the the physical dimensions of obstacles as well as any desired transforms between a given reference
+// frame and a new target reference frame.
 type WorldState struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
