@@ -742,8 +742,8 @@ func (x *GeometriesInFrame) GetGeometries() []*Geometry {
 	return nil
 }
 
-// PointCloudObject contains an image in bytes with point cloud data of all of the objects captured by a given observer as well as a repeated list of
-// geometries which respresents the center point and geometry of each of the objects within the point cloud
+// PointCloudObject contains an image in bytes with point cloud data of all of the objects captured by a given observer as well as a
+// repeated list of geometries which respresents the center point and geometry of each of the objects within the point cloud
 type PointCloudObject struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -916,15 +916,15 @@ func (x *Transform) GetPoseInObserverFrame() *PoseInFrame {
 	return nil
 }
 
-// WorldState contrains information about the physical environment around a given robot. All of the fields within this message as optional,
-// they can include information about the the physical dimensions of obstacles as well as any desired transforms between a given reference
-// frame and a new target reference frame.
+// WorldState contains information about the physical environment around a given robot. All of the fields within this message are optional,
+// they can include information about the physical dimensions of an obstacle, the freespace of a robot, and any desired transforms between a
+// given reference frame and a new target reference frame.
 type WorldState struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// a list of obstacles extressed as a geomtry and the reference frame in which it was observed
+	// a list of obstacles expressed as a geomtry and the reference frame in which it was observed; this field is optional
 	Obstacles []*GeometriesInFrame `protobuf:"bytes,1,rep,name=obstacles,proto3" json:"obstacles,omitempty"`
 	// a list of Transforms needed to transform a pose from one reference frame to another; this field is optional
 	Transforms []*Transform `protobuf:"bytes,2,rep,name=transforms,proto3" json:"transforms,omitempty"`
