@@ -522,7 +522,7 @@ const handlePointsResize = (event: CustomEvent) => {
 };
 
 
-const worldStateInfo = $ref('hey there');
+const worldStateInfo = $ref('');
 
 const make_box = () => {
   userBox = new THREE.Mesh(
@@ -531,12 +531,19 @@ const make_box = () => {
 			)
 
     transformControls.attach(userBox);
+    
 		scene.add(userBox)
+    
+    // worldStateInfo = userBoxDims.x + ' ' + userBoxDims.y + ' ' + userBoxDims.z
+    // worldStateInfo = userBox.position.X
+    worldStateInfo = 'box=RectangularPrism(dims_mm=Vector3(x=' + userBoxDims.x +', y=' + userBoxDims.y + ', z=' +userBoxDims.z + ')))'
+    
 };
 
 const updateBoxDims = () => {
   console.log('updateBoxDims ' + userBoxDims.x + ' ' + userBoxDims.y + ' ' + userBoxDims.z);
   userBox.geometry = new THREE.BoxGeometry(userBoxDims.x, userBoxDims.y, userBoxDims.z);
+  worldStateInfo = 'box=RectangularPrism(dims_mm=Vector3(x='+userBoxDims.x+', y='+userBoxDims.y+',z='+userBoxDims.z+')))'
 };
 
 const update_box_x = (event: CustomEvent) => {
@@ -551,11 +558,11 @@ const update_box_y = (event: CustomEvent) => {
 
 const update_box_z = (event: CustomEvent) => {
   userBoxDims.z = event.detail.value;
-  updateBoxDims();
+  updateBoxDims() ;
 };
 
 const print_world = () => {
-  userBoxDims.x
+  userBoxDims.x = event.detail.value;
 }
 
 const init = (pointcloud: Uint8Array) => {
@@ -655,15 +662,12 @@ watch(() => props.pointcloud, (updated?: Uint8Array) => {
       </div>
 
       <div class="flex items-center gap-1">
-      <v-button
-        label = "Print World State"
-        @click="print_world"
-      />
       <v-input
+          class="w-[800px] overflow-hidden"
           readonly
           label="Code Sample"
           labelposition="left"
-          :value="print_world"
+          :value="worldStateInfo"
       />
       </div>
 

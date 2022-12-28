@@ -72,7 +72,7 @@ func (c *Camera) Read(ctx context.Context) (image.Image, func(), error) {
 
 // NextPointCloud always returns a pointcloud of the chess board.
 func (c *Camera) NextPointCloud(ctx context.Context) (pointcloud.PointCloud, error) {
-	f, _ := os.Open(utils.ResolveFile("./etc/data/armOnly2.pcd"))
+	f, _ := os.Open(utils.ResolveFile("./etc/data/specialspecial.pcd"))
 	defer f.Close()
 
 	pc, _ := pointcloud.ReadPCD(f)
