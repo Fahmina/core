@@ -478,6 +478,7 @@ const (
 
 // ReadPCD reads a PCD file into a pointcloud.
 func ReadPCD(inRaw io.Reader) (PointCloud, error) {
+	fmt.Println("do we get here instead?")
 	return readPCDHelper(inRaw, BasicType)
 }
 
@@ -527,6 +528,7 @@ func readPCDHelper(inRaw io.Reader, pctype PCType) (PointCloud, error) {
 	}
 	switch header.data {
 	case PCDAscii:
+		fmt.Println("we get here")
 		return readPCDAscii(in, header, pc)
 	case PCDBinary:
 		return readPCDBinary(in, header, pc)

@@ -4,6 +4,7 @@ package fake
 import (
 	"context"
 	"image"
+	"os"
 
 	"github.com/edaniels/golog"
 	"go.viam.com/utils/artifact"
@@ -16,6 +17,7 @@ import (
 	"go.viam.com/rdk/resource"
 	"go.viam.com/rdk/rimage"
 	"go.viam.com/rdk/rimage/transform"
+	"go.viam.com/rdk/utils"
 )
 
 func init() {
@@ -70,14 +72,21 @@ func (c *Camera) Read(ctx context.Context) (image.Image, func(), error) {
 
 // NextPointCloud always returns a pointcloud of the chess board.
 func (c *Camera) NextPointCloud(ctx context.Context) (pointcloud.PointCloud, error) {
-	img, err := rimage.NewImageFromFile(artifact.MustPath("rimage/board2.png"))
-	if err != nil {
-		return nil, err
-	}
-	dm, err := rimage.NewDepthMapFromFile(
-		context.Background(), artifact.MustPath("rimage/board2_gray.png"))
-	if err != nil {
-		return nil, err
-	}
-	return c.Model.RGBDToPointCloud(img, dm)
+	f, _ := os.Open(utils.ResolveFile("./etc/data/armOnly2.pcd"))
+	defer f.Close()
+
+	pc, _ := pointcloud.ReadPCD(f)
+
+	// img, err := rimage.NewImageFromFile(artifact.MustPath("rimage/board2.png"))
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// dm, err := rimage.NewDepthMapFromFile(
+	// 	context.Background(), artifact.MustPath("rimage/board2_gray.png"))
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return c.Model.RGBDToPointCloud(img, dm)
+
+	return pc, nil
 }

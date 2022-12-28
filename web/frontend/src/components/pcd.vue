@@ -88,6 +88,9 @@ const sphereWireframe = new THREE.WireframeGeometry(sphereGeometry);
 const sphere = new THREE.LineSegments(sphereWireframe);
 scene.add(sphere);
 
+let userBox = null;
+let userBoxDims = $ref(new THREE.Vector3(.05, .05, .05));
+
 const sphereMaterial = sphere.material as THREE.MeshBasicMaterial;
 sphereMaterial.color.set('black');
 sphereMaterial.transparent = true;
@@ -292,7 +295,7 @@ const update = (cloud: Uint8Array) => {
   mesh.instanceMatrix.needsUpdate = true;
 
   scene.add(mesh);
-  transformControls.attach(mesh);
+  // transformControls.attach(mesh);
 
   if (cube) {
     scene.add(cube);
@@ -518,6 +521,43 @@ const handlePointsResize = (event: CustomEvent) => {
   mesh.instanceMatrix.needsUpdate = true;
 };
 
+
+const worldStateInfo = $ref('hey there');
+
+const make_box = () => {
+  userBox = new THREE.Mesh(
+			    new THREE.BoxGeometry(.05,.05,.05),
+			    new THREE.MeshPhongMaterial({ color: "blue" })
+			)
+
+    transformControls.attach(userBox);
+		scene.add(userBox)
+};
+
+const updateBoxDims = () => {
+  console.log('updateBoxDims ' + userBoxDims.x + ' ' + userBoxDims.y + ' ' + userBoxDims.z);
+  userBox.geometry = new THREE.BoxGeometry(userBoxDims.x, userBoxDims.y, userBoxDims.z);
+};
+
+const update_box_x = (event: CustomEvent) => {
+  userBoxDims.x = event.detail.value;
+  updateBoxDims();
+};
+
+const update_box_y = (event: CustomEvent) => {
+  userBoxDims.y = event.detail.value;
+  updateBoxDims();
+};
+
+const update_box_z = (event: CustomEvent) => {
+  userBoxDims.z = event.detail.value;
+  updateBoxDims();
+};
+
+const print_world = () => {
+  userBoxDims.x
+}
+
 const init = (pointcloud: Uint8Array) => {
   update(pointcloud);
 
@@ -581,25 +621,50 @@ watch(() => props.pointcloud, (updated?: Uint8Array) => {
 
     <div class="relative flex flex-wrap w-full items-center justify-between gap-12">
       <div class="w-full pl-4 pt-2 max-w-xs">
-        <v-slider
-          label="Points Scaling"
-          min="0.1"
-          value="1"
-          max="3"
-          step="0.05"
-          @input="handlePointsResize"
-        />
+      <v-button
+        label = "Add box"
+        @click="make_box"
+      />
+      <v-slider
+        label = "box x"
+        :value = "userBoxDims.x"
+        min="0.05"
+        value=".1"
+        max="3"
+        step="0.05"
+        @input="update_box_x"
+      />
+      <v-slider
+        label = "box y"
+        :value = "userBoxDims.y"
+        min="0.05"
+        value=".1"
+        max="3"
+        step="0.05"
+        @input="update_box_y"
+      />
+      <v-slider
+        label = "box z"
+        :value = "userBoxDims.z"
+        min="0.05"
+        value=".1"
+        max="3"
+        step="0.05"
+        @input="update_box_z"
+      />
       </div>
 
       <div class="flex items-center gap-1">
-        <span class="text-xs">Controls</span>
-        <InfoButton
-          :info-rows="[
-            'Rotate - Left/Click + Drag',
-            'Pan - Right/Two Finger Click + Drag',
-            'Zoom - Wheel/Two Finger Scroll',
-          ]"
-        />
+      <v-button
+        label = "Print World State"
+        @click="print_world"
+      />
+      <v-input
+          readonly
+          label="Code Sample"
+          labelposition="left"
+          :value="print_world"
+      />
       </div>
 
       <label class="flex flex-col gap-1 text-xs">
@@ -625,6 +690,22 @@ watch(() => props.pointcloud, (updated?: Uint8Array) => {
         <v-switch
           value="on"
           @input="handleToggleGrid"
+        />
+        <v-slider
+          label="Points Scaling"
+          min="0.1"
+          value="1"
+          max="3"
+          step="0.05"
+          @input="handlePointsResize"
+        />
+        <span class="text-xs">Controls</span>
+        <InfoButton
+          :info-rows="[
+            'Rotate - Left/Click + Drag',
+            'Pan - Right/Two Finger Click + Drag',
+            'Zoom - Wheel/Two Finger Scroll',
+          ]"
         />
       </label>
     </div>
