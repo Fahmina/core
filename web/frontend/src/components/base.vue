@@ -2,7 +2,8 @@
 
 import { grpc } from '@improbable-eng/grpc-web';
 import { ref, onMounted, onUnmounted } from 'vue';
-import { Client, type ServiceError, baseApi, commonApi } from '@viamrobotics/sdk';
+import { Client, type ServiceError, baseApi, commonApi, slamApi } from '@viamrobotics/sdk';
+import Slam from './slam.vue';
 import { filterResources } from '../lib/resource';
 import { displayError } from '../lib/error';
 import KeyboardInput, { type Keys } from './keyboard-input.vue';
@@ -293,6 +294,16 @@ onUnmounted(() => {
             @keyup="handleKeyUp"
             @toggle="(active: boolean) => { !active && (pressed.size > 0 || !stopped) && stop() }"
           />
+          <div>
+            <p>HI</p>
+            <Slam
+              v-for="slam in filterResources(resources, 'rdk', 'service', 'slam')"
+              :key="slam.name"
+              :name="slam.name"
+              :client="props.client"
+              :resources="resources"
+            />
+          </div>
           <div v-if="filterResources(resources, 'rdk', 'component', 'camera')">
             <v-multiselect
               v-model="selectCameras"
