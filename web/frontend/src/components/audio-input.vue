@@ -5,6 +5,12 @@ import { StreamClient } from '@viamrobotics/sdk';
 import type { Client, ServiceError } from '@viamrobotics/sdk';
 import { displayError } from '../lib/error';
 
+//working one
+// import { ref } from 'vue';
+// import type { Client, ServiceError } from '@viamrobotics/sdk';
+// import { displayError } from '../lib/error';
+// import { addStream, removeStream } from '../lib/stream';
+
 interface Props {
   name: string
   client: Client

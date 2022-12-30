@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { ref, onMounted, onUnmounted } from 'vue';
-import { Client, type ServiceError, baseApi, commonApi, slamApi } from '@viamrobotics/sdk';
+import { Client, BaseClient, StreamClient, type ServiceError, baseApi, commonApi, slamApi } from '@viamrobotics/sdk';
 import Slam from './slam.vue';
 import { filterResources } from '../lib/resource';
 import { displayError } from '../lib/error';
