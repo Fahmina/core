@@ -78,6 +78,10 @@ transformControls.addEventListener('dragging-changed', (event) => {
   controls.enabled = !event.value;
 });
 
+transformControls.addEventListener('change', () => {
+  updateBoxDims()
+})
+
 const color = new THREE.Color();
 let mesh: THREE.InstancedMesh;
 
@@ -536,14 +540,16 @@ const make_box = () => {
     
     // worldStateInfo = userBoxDims.x + ' ' + userBoxDims.y + ' ' + userBoxDims.z
     // worldStateInfo = userBox.position.X
-    worldStateInfo = 'box=RectangularPrism(dims_mm=Vector3(x=' + userBoxDims.x +', y=' + userBoxDims.y + ', z=' +userBoxDims.z + ')))'
-    
+    worldStateInfo = `Geometry(center=Pose(x=${userBox.position.x}, y=${userBox.position.y}, z=${userBox.position.z}), `
+    worldStateInfo += 'box=RectangularPrism(dims_mm=Vector3(x='+userBoxDims.x+', y='+userBoxDims.y+',z='+userBoxDims.z+')))'
+
 };
 
 const updateBoxDims = () => {
   console.log('updateBoxDims ' + userBoxDims.x + ' ' + userBoxDims.y + ' ' + userBoxDims.z);
   userBox.geometry = new THREE.BoxGeometry(userBoxDims.x, userBoxDims.y, userBoxDims.z);
-  worldStateInfo = 'box=RectangularPrism(dims_mm=Vector3(x='+userBoxDims.x+', y='+userBoxDims.y+',z='+userBoxDims.z+')))'
+  worldStateInfo = `Geometry(center=Pose(x=${userBox.position.x}, y=${userBox.position.y}, z=${userBox.position.z}), `
+  worldStateInfo += 'box=RectangularPrism(dims_mm=Vector3(x='+userBoxDims.x+', y='+userBoxDims.y+',z='+userBoxDims.z+')))'
 };
 
 const update_box_x = (event: CustomEvent) => {
