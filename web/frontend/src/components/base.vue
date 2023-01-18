@@ -280,13 +280,45 @@ onUnmounted(() => {
         v-if="selectedItem === 'Keyboard'"
         class="h-auto p-4"
       >
-        <div class="grid grid-cols-1 sm:grid-cols-2">
-          <KeyboardInput
-            class="mb-2"
-            @keydown="handleKeyDown"
-            @keyup="handleKeyUp"
-            @toggle="(active: boolean) => { !active && (pressed.size > 0 || !stopped) && stop() }"
-          />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div>
+            <KeyboardInput
+              class="mb-8"
+              @keydown="handleKeyDown"
+              @keyup="handleKeyUp"
+              @toggle="(active: boolean) => { !active && (pressed.size > 0 || !stopped) && stop() }"
+            />
+            <div v-if="filterResources(resources, 'rdk', 'component', 'camera')">
+              <v-multiselect
+                v-model="selectCameras"
+                class="mb-4"
+                clearable="false"
+                placeholder="Select Cameras"
+                aria-label="Select Cameras"
+                :options="
+                  filterResources(resources, 'rdk', 'component', 'camera')
+                    .map(({ name }) => name)
+                    .join(',')
+                "
+                @input="viewPreviewCamera($event.detail.value)"
+              />
+              <template
+                v-for="basecamera in filterResources(
+                  resources,
+                  'rdk',
+                  'component',
+                  'camera'
+                )"
+                :key="basecamera.name"
+              >
+                <div
+                  v-if="basecamera"
+                  :data-stream-preview="basecamera.name"
+                  :class="{ 'hidden': !baseStreamStates.get(basecamera.name) }"
+                />
+              </template>
+            </div>
+          </div>
           <div>
             <p>HI</p>
             <Slam
@@ -296,36 +328,6 @@ onUnmounted(() => {
               :client="props.client"
               :resources="resources"
             />
-          </div>
-          <div v-if="filterResources(resources, 'rdk', 'component', 'camera')">
-            <v-multiselect
-              v-model="selectCameras"
-              class="mb-4"
-              clearable="false"
-              placeholder="Select Cameras"
-              aria-label="Select Cameras"
-              :options="
-                filterResources(resources, 'rdk', 'component', 'camera')
-                  .map(({ name }) => name)
-                  .join(',')
-              "
-              @input="viewPreviewCamera($event.detail.value)"
-            />
-            <template
-              v-for="basecamera in filterResources(
-                resources,
-                'rdk',
-                'component',
-                'camera'
-              )"
-              :key="basecamera.name"
-            >
-              <div
-                v-if="basecamera"
-                :data-stream-preview="basecamera.name"
-                :class="{ 'hidden': !baseStreamStates.get(basecamera.name) }"
-              />
-            </template>
           </div>
         </div>
       </div>
